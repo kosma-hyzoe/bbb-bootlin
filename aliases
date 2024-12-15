@@ -1,0 +1,16 @@
+#!/usr/bin/bash
+
+export MODULES_PATH="~/projects/linux-kernel-labs/lib/modules"
+
+export ARCH="arm" CROSS_COMPILE="arm-linux-gnueabi-" \
+    INSTALL_MOD_PATH=$MODULES_PATH
+
+# build and "flash" the device tree binary
+alias bfdt='make dtbs && sudo cp arch/arm/boot/dts/ti/omap/am335x-boneblack-custom.dtb /srv/tftp/am335x-boneblack.dtb'
+# build and "flash" the kernel zImage
+alias bfz='make zImage && sudo mv /srv/tftp/zImage /srv/tftp/zImage.old ; sudo cp arch/arm/boot/zImage /srv/tftp'
+alias gfp='git format-patch -1 HEAD'
+alias exconf='make savedefconfig && mv -f defconfig arch/arm/configs/bbb_defconfig'
+alias kstyle='~/projects/linux-kernel-labs/src/linux/scripts/checkpatch.pl --file --no-tree'
+alias bfa='make && bfdt && bfz'
+alias make_bbb_module="make INSTALL_MOD_PATH=~/projects/linux-kernel-labs/modules/nfsroot modules_install"
